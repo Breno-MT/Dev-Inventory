@@ -34,9 +34,9 @@ def populate_db():
         return 
 
     brasil_code = 76
-    country_data_request = requests.get(f"https://servicodados.ibge.gov.br/api/v1/localidades/paises/{brasil_code}")
-    states_data_request = requests.get("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
-    cities_data_request = requests.get("https://servicodados.ibge.gov.br/api/v1/localidades/municipios")
+    country_data_request = requests.get(f"http://servicodados.ibge.gov.br/api/v1/localidades/paises/{brasil_code}")
+    states_data_request = requests.get("http://servicodados.ibge.gov.br/api/v1/localidades/estados")
+    cities_data_request = requests.get("http://servicodados.ibge.gov.br/api/v1/localidades/municipios")
 
     country_name = country_data_request.json()[0]['nome']
     Country.seed(name=country_name, language='Português')
@@ -139,7 +139,7 @@ def populate_db():
             description=item['description']
         )
 
-    users_data_request = requests.get('https://randomuser.me/api?nat=br&results=10')
+    users_data_request = requests.get('http://randomuser.me/api?nat=br&results=10')
 
     gender_description = {"male": "Masculino", "female" :"Feminino"}
 
