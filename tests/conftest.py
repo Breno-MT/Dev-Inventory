@@ -25,7 +25,7 @@ def logged_in_client(client):
   }
 
   response = client.post("user/login", data=json.dumps(data), headers=headers)
-  return response.json["token"]
+  return response.json['token']
 
 @pytest.fixture
 def logged_in_client_with_user_deleted(client):
@@ -63,7 +63,7 @@ def session(app):
     transaction.rollback()
     connection.close()
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def root_user():
 
     User.seed(
@@ -80,7 +80,7 @@ def root_user():
     landmark=None,
     district=None,
     street = "Rua teste",
-    number_street = 171
+    number_street = "171"
     )
 
 @pytest.fixture
@@ -92,5 +92,5 @@ def logged_in_as_root(client):
     }
 
     response = client.post("user/login", data=json.dumps(data), headers=headers)
-    return response.json["token"]
+    return response.json['token']
 
