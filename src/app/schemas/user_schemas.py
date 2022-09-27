@@ -79,3 +79,13 @@ class UpdateUserBodySchema(Schema):
     def validate_cep(self, cep):
         if not cep.isnumeric() and len(cep) != 8:
             raise ValidationError('O cep não é válido.')
+    
+    @validates('name')
+    def validate_empty_name(self, name):
+        if name == "":
+            raise ValidationError('O name não pode ser vazio.')
+    
+    @validates('email')
+    def validate_empty_email(self, email):
+        if email == "":
+            raise ValidationError('O email não pode ser vazio.')
