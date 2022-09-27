@@ -22,6 +22,11 @@ class ProductBodySchema(Schema):
     def validate_product_code(self, product_code):
         if len(str(product_code)) > 8 or product_code <= 0:
             raise ValidationError('O código do produto deve ser maior que 0 com no máximo 8 dígitos.')
+    
+    @validates('value')
+    def validate_value(self, value):
+        if value <= 0:
+            raise ValidationError('O valor não pode ser menor ou igual a 0.')
 
 
 class UpdateProductBodySchema(Schema):
