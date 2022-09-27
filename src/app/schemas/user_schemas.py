@@ -41,7 +41,7 @@ class CreateUserBodySchema(Schema):
 
     @validates('phone')
     def validate_phone(self, phone):
-        if not phone.isnumeric() or len(phone) != 8:
+        if not phone.isnumeric() or len(phone) != 11:
             raise ValidationError('O telefone não é válido.')
 
     @validates('cep')
