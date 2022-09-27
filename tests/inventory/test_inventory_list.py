@@ -66,3 +66,14 @@ def test_inventory_list_results(client, logged_in_client):
 
     assert response.status_code == 200
 
+def test_inventory_list_results_permission_insufficient(client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+
+    response = client.get('inventory/results', headers=headers)
+
+    assert response.status_code == 403
+
