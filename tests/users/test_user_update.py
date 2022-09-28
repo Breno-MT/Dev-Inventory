@@ -22,13 +22,12 @@ def test_update_user_success(client, logged_in_as_root):
 
     assert response.status_code == 204
 
-def test_update_user_permission_insufficient(client, logged_in_client):
+def test_update_user_permission_insufficient(client):
 
     mimetype = 'application/json'
     headers = {
         'Content-Type': mimetype,
         'Accept': mimetype,
-        'Authorization': f"Bearer {logged_in_client}"
     }
 
     user_id = random.randint(1,8)
@@ -41,6 +40,7 @@ def test_update_user_permission_insufficient(client, logged_in_client):
 
     response = client.patch(f"user/{user_id}", data=json.dumps(data), headers=headers)
 
+    assert response.json['error'] == 'Você não tem permissão'
     assert response.status_code == 403
 
 def test_update_user_with_empty_body(client, logged_in_as_root):
@@ -82,4 +82,5 @@ def test_update_user_not_found(client, logged_in_as_root):
 
     response = client.patch(f"user/{user_id}", data=json.dumps(data), headers=headers)
 
+    assert response.json['error'] == 'Usuário não existe.'
     assert response.status_code == 404
