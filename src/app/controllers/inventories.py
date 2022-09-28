@@ -89,7 +89,7 @@ def get_inventory_by_id(id):
         return jsonify(inventory_by_id), 200
 
     except:
-        return jsonify({"error": "Id inválido."}), 404
+        return jsonify({"error": "Id não existente."}), 404
     
 
 
