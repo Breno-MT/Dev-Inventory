@@ -20,8 +20,8 @@ def test_create_user_permission_insufficient(client, logged_in_client):
     }
 
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
-    assert response.status_code == 403
     assert response.json["error"] == "Você não tem permissão para essa funcionalidade"
+    assert response.status_code == 403
 
 
 def test_create_user_with_permission(client, logged_in_as_root):
@@ -54,6 +54,7 @@ def test_create_user_with_permission(client, logged_in_as_root):
     }
 
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
+    assert response.json['message'] == 'Usuário criado com sucesso.'
     assert response.status_code == 201
 
 def test_create_missing_fields(client, logged_in_as_root):
@@ -73,14 +74,16 @@ def test_create_missing_fields(client, logged_in_as_root):
         "email": "teste1@gmail.com",
         "city_id": 1,
         "name": "TESTE",
-        "age": "1992-02-02",
+        "phone": "99999999999",
         "password": "123345Teste!",
-
+        "age": "1992-02-02"
     }
 
-
-
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
+
+    for missing_key in response.json:
+        assert response.json[missing_key] == [f'O campo {missing_key} é obrigatório.']
+
     assert response.status_code == 400
 
 
@@ -104,7 +107,7 @@ def teste_create_user_with_same_email(client, logged_in_as_root):
         "age": "1992-02-02",
         "password": "123345Teste!",
         "cep": "99999999",
-        "phone": "99999999",
+        "phone": "99999999000",
         "complement": "Teste N",
         "landmark": "Teste N",
         "district": "Teste N",
@@ -115,4 +118,5 @@ def teste_create_user_with_same_email(client, logged_in_as_root):
 
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
+    assert response.json["error"] == "Erro na criação de Usuário. Email já existe."
     assert response.status_code == 400
