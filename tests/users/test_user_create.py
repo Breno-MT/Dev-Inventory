@@ -120,3 +120,38 @@ def teste_create_user_with_same_email(client, logged_in_as_root):
     response = client.post("/user/create", data=json.dumps(data), headers=headers)
     assert response.json["error"] == "Erro na criação de Usuário. Email já existe."
     assert response.status_code == 400
+
+def test_create_user_with_invalid_field(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+
+    headers["Authorization"] = f"Bearer {logged_in_as_root}"
+
+    data = {
+        "gender_id": 1,
+        "city_id": 2,
+        "role_id": 1,
+        "email": "teste1@gmail.com",
+        "city_id": 1,
+        "name": 123,
+        "age": "1992-02-02",
+        "password": "123345Teste!",
+        "cep": "99999999",
+        "phone": "99999999000",
+        "complement": "Teste N",
+        "landmark": "Teste N",
+        "district": "Teste N",
+        "street": "Rua teste",
+        "number_street": "119",
+        "complement": "Teste N"
+    }
+
+    response = client.post("/user/create", data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == [f'{error} Não é um campo válido.']
+
+    assert response.status_code == 400
