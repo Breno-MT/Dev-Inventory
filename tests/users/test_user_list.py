@@ -26,6 +26,7 @@ def test_list_user_insufficient_permission(client):
 
     response = client.get('user/', headers=headers)
 
+    assert response.json['error'] == 'Você não tem permissão'
     assert response.status_code == 403
 
 
