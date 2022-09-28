@@ -128,7 +128,7 @@ def test_inventory_create_value_equals_zero(client, logged_in_as_root):
 
     for error in response.json:
         assert response.json[error] == ['O valor não pode ser menor ou igual a 0.']
-        
+
     assert response.status_code == 400
 
 def test_inventory_create_value_equals_to_string(client, logged_in_as_root):
@@ -153,7 +153,7 @@ def test_inventory_create_value_equals_to_string(client, logged_in_as_root):
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
     for error in response.json:
-        assert response.json[error] == ['Não é um campo válido.']
+        assert response.json[error] == [f'{error} Não é um campo válido.']
 
     assert response.status_code == 400
 
@@ -178,7 +178,7 @@ def test_inventory_invalid_field(client, logged_in_as_root):
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
     for error in response.json:
-        assert response.json[error] == ['Não é um campo válido.']
+        assert response.json[error] == [f'{error} Não é um campo válido.']
     
     assert response.status_code == 400
 
