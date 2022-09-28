@@ -31,6 +31,7 @@ def test_inventory_create_success(client, logged_in_as_root):
 
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
+    assert response.json["message"] == "Item cadastrado com sucesso"
     assert response.status_code == 201
 
 def test_inventory_create_same_product_code(client, logged_in_as_root):
@@ -54,7 +55,7 @@ def test_inventory_create_same_product_code(client, logged_in_as_root):
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
-    # assert "error" in response.json['error'] == 'Esse código de produto já existe'
+    assert response.json["error"] == "Esse código de produto já existe"
     assert response.status_code == 400
 
 def test_inventory_create_missing_body(client, logged_in_as_root):
@@ -72,10 +73,12 @@ def test_inventory_create_missing_body(client, logged_in_as_root):
         'product_category_id': 1,
         'product_code': '984534',
         'template': 'l4zrr33r',
-
     }
 
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
+
+    for missing_key in response.json:
+        assert response.json[missing_key] == [f'O campo {missing_key} é obrigatório.']
 
     assert response.status_code == 400
 
@@ -99,6 +102,7 @@ def test_inventory_create_permission_insufficient(client):
 
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
+    assert response.json["error"] == "Você não tem permissão"
     assert response.status_code == 403
 
 def test_inventory_create_value_equals_zero(client, logged_in_as_root):
@@ -117,7 +121,7 @@ def test_inventory_create_value_equals_zero(client, logged_in_as_root):
         'product_code': '284534',
         'template': 'l4zr33r',
         'title': 'Melhor Mouse do Mundo',
-        'value': -12
+        'value': 0
     }
 
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)

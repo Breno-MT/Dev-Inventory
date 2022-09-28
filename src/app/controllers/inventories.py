@@ -46,7 +46,7 @@ def create(body):
     if exist_product_code(body['product_code']):
         return jsonify({"error": "Esse código de produto já existe"}), 400
 
-    if not body["value"]:
+    if body["value"] <= 0:
         return jsonify({"error": "O valor não pode ser menor ou igual a zero"}), 400
 
     response = create_product(**body)
