@@ -1,4 +1,3 @@
-
 def handle_error_messages(field):
     error_message = {
         'required': f'O campo {field} é obrigatório.',
