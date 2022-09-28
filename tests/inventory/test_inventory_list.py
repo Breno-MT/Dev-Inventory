@@ -121,7 +121,7 @@ def test_inventory_get_product_by_id_not_found(client, logged_in_client):
 
     response = client.get(f"inventory/id:{random_id}", headers=headers)
 
-    assert response.json["error"] == "Id inválido."
+    assert response.json["error"] == "Id não existente."
     assert response.status_code == 404
 
 def test_inventory_get_product_by_id_invalid_format(client, logged_in_client):
