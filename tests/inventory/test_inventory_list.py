@@ -1,4 +1,3 @@
-from multiprocessing.context import assert_spawning
 import random
 from flask import json
 
@@ -39,6 +38,13 @@ def test_inventory_list_by_name_success(client, logged_in_client):
 
     response = client.get(f"inventory/?name={name}", headers=headers)
 
+    verify_exist_value_in_response = True
+
+    for data in response.json:
+        if not name in data['title']:
+            verify_exist_value_in_response = False
+
+    assert verify_exist_value_in_response
     assert response.status_code == 200
 
 def test_inventory_list_by_name_no_content(client, logged_in_client):
