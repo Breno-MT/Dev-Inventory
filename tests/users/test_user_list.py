@@ -13,8 +13,7 @@ def test_list_user_success(client, logged_in_client):
 
     response = client.get("user/", headers=headers)
 
-    for _ in response.json:
-        assert len(response.json) != 0
+    assert len(response.json) != 0
     assert response.status_code == 200
 
 
@@ -61,6 +60,13 @@ def test_list_many_users_by_name(client, logged_in_client):
 
     response = client.get(f"user/?name={name_param}", headers=headers)
 
+    verify_exist_value_in_response = True
+
+    for data in response.json:
+        if not name_param in data['name']:
+            verify_exist_value_in_response = False
+
+    assert verify_exist_value_in_response
     assert response.status_code == 200
 
 
