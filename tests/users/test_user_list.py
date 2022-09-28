@@ -13,6 +13,8 @@ def test_list_user_success(client, logged_in_client):
 
     response = client.get("user/", headers=headers)
 
+    for _ in response.json:
+        assert len(response.json) != 0
     assert response.status_code == 200
 
 
@@ -55,9 +57,9 @@ def test_list_many_users_by_name(client, logged_in_client):
         "Authorization": f"Bearer {logged_in_client}"
     }
 
-    name = "a"
+    name_param = "a"
 
-    response = client.get(f"user/?name={name}", headers=headers)
+    response = client.get(f"user/?name={name_param}", headers=headers)
 
     assert response.status_code == 200
 
