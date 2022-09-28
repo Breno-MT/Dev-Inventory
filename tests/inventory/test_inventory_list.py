@@ -1,3 +1,5 @@
+from multiprocessing.context import assert_spawning
+import random
 from flask import json
 
 def test_inventory_list_insufficient_permission(client):
@@ -76,4 +78,76 @@ def test_inventory_list_results_permission_insufficient(client):
 
     assert response.json["error"] == "Você não tem permissão"
     assert response.status_code == 403
+
+def test_inventory_get_product_by_id_param_success(client, logged_in_client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_client}'
+    }
+
+    random_id = random.randint(1,5)
+
+    response = client.get(f'inventory/id:{random_id}', headers=headers)
+
+    assert random_id == response.json['id']
+    assert response.status_code == 200
+
+def test_inventory_get_product_by_id_param_permission_insufficient(client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+
+    random_id = random.randint(1,5)
+
+    response = client.get(f"inventory/id:{random_id}", headers=headers)
+
+    assert response.json["error"] == "Você não tem permissão"
+    assert response.status_code == 403
+
+
+def test_inventory_get_product_by_id_not_found(client, logged_in_client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_client}'
+    }
+
+    random_id = 300
+
+    response = client.get(f"inventory/id:{random_id}", headers=headers)
+
+    assert response.json["error"] == "Id inválido."
+    assert response.status_code == 404
+
+def test_inventory_get_product_by_id_invalid_format(client, logged_in_client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_client}'
+    }
+
+    random_str = "nãoéprafuncionar"
+
+    response = client.get(f"inventory/id:{random_str}", headers=headers)
+
+    assert response.status_code == 404
+
+def test_inventory_get_product_by_id_no_param_used(client, logged_in_client):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_client}'
+    }
+
+    response = client.get("inventory/id:", headers=headers)
+
+    assert response.status_code == 404
+
 
