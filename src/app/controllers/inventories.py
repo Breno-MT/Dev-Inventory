@@ -1,9 +1,11 @@
+from types import NoneType
 from flask import Blueprint, jsonify, request
 
 from src.app import db
 from src.app.models.inventory import Inventory
 from src.app.middlewares.auth import requires_access_level
 from src.app.services.inventory_services import create_product, get_all_inventories, get_inventories_by_name
+from src.app.services.inventory_services import get_inventories_by_id
 from src.app.utils import exist_product_code
 from src.app.services.queries_services import queries
 from src.app.schemas.product_schema import ProductBodySchema, UpdateProductBodySchema
@@ -77,6 +79,18 @@ def get_inventories():
             return jsonify(), 204
     
     return jsonify(all_inventories), 200
+
+
+@inventory.route('/id:<int:id>', methods=['GET'])
+@requires_access_level(["READ"])
+def get_inventory_by_id(id):   
+    try:
+        inventory_by_id = get_inventories_by_id(id)
+        return jsonify(inventory_by_id), 200
+
+    except:
+        return jsonify({"error": "Id inválido."}), 404
+    
 
 
 @inventory.route("/<int:id>", methods = ["PATCH"])

@@ -1,4 +1,4 @@
-from src.app.models.inventory import Inventory, inventories_share_schema
+from src.app.models.inventory import Inventory, inventories_share_schema, inventory_share_schema
 from src.app.services import user_services
 
 
@@ -50,3 +50,9 @@ def get_all_inventories(page=None):
     inventories = inventories_share_schema.dump(Inventory.query.paginate(per_page=20, page=page).items)
     
     return format_result(inventories) if inventories else None
+
+def get_inventories_by_id(id):
+    result = Inventory.query.filter(Inventory.id==id).first_or_404()
+    return inventory_share_schema.dump(result)
+
+
