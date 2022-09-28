@@ -126,5 +126,84 @@ def test_inventory_create_value_equals_zero(client, logged_in_as_root):
 
     response = client.post('inventory/create', data=json.dumps(data), headers=headers)
 
+    for error in response.json:
+        assert response.json[error] == ['O valor não pode ser menor ou igual a 0.']
+        
+    assert response.status_code == 400
+
+def test_inventory_create_value_equals_to_string(client, logged_in_as_root):
+    
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_as_root}'
+    }
+
+    data = {
+        'brand': 'Lazerrrrrr',
+        'description': 'O melhorrrrrrr mouse do mundo serio.',
+        'product_category_id': 1,
+        'product_code': '284534',
+        'template': 'l4zr33r',
+        'title': 'Melhor Mouse do Mundo',
+        'value': "testing"
+    }
+
+    response = client.post('inventory/create', data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == ['Não é um campo válido.']
+
+    assert response.status_code == 400
+
+def test_inventory_invalid_field(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_as_root}'
+    }
+
+    data = {
+        'brand': 123,
+        'description': 'O melhorrrrrrr mouse do mundo serio.',
+        'product_category_id': 1,
+        'product_code': '284534',
+        'template': 'l4zr33r',
+        'title': 'Melhor Mouse do Mundo',
+        'value': 123
+    }
+
+    response = client.post('inventory/create', data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == ['Não é um campo válido.']
+    
+    assert response.status_code == 400
+
+def test_inventory_value_equals_to_negative(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_as_root}'
+    }
+
+    data = {
+        'brand': "AAAAA",
+        'description': 'O melhorrrrrrr mouse do mundo serio.',
+        'product_category_id': 1,
+        'product_code': '284534',
+        'template': 'l4zr33r',
+        'title': 'Melhor Mouse do Mundo',
+        'value': -123.01
+    }
+
+    response = client.post('inventory/create', data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == ['O valor não pode ser menor ou igual a 0.']
+    
     assert response.status_code == 400
 
