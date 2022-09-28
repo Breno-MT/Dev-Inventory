@@ -7,7 +7,7 @@ def validate_password(password):
         raise ValidationError('A senha precisa ser maior ou igual a 8.')
 
     if password.isalnum():
-        raise ValidationError('A precisa ter pelo menos 1 caracter especial.')
+        raise ValidationError('A senha precisa ter pelo menos 1 caracter especial.')
 
 
 class LoginBodySchema(Schema):
