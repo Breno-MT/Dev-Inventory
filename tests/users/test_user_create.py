@@ -24,7 +24,7 @@ def test_create_user_permission_insufficient(client, logged_in_client):
     assert response.status_code == 403
 
 
-def test_create_user_with_permission(client, logged_in_as_root):
+def test_create_user_with_permission_success(client, logged_in_as_root):
 
     mimetype = 'application/json'
     headers = {
@@ -155,3 +155,39 @@ def test_create_user_with_invalid_field(client, logged_in_as_root):
         assert response.json[error] == [f'{error} Não é um campo válido.']
 
     assert response.status_code == 400
+
+def test_create_user_with_invalid_age(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype
+    }
+
+    headers["Authorization"] = f"Bearer {logged_in_as_root}"
+
+    data = {
+        "gender_id": 1,
+        "city_id": 2,
+        "role_id": 1,
+        "email": "teste1@gmail.com",
+        "city_id": 1,
+        "name": "TESTE",
+        "age": "19",
+        "password": "12345678!",
+        "cep": "99999999",
+        "phone": "99999999999",
+        "complement": "Teste N",
+        "landmark": "Teste N",
+        "district": "Teste N",
+        "street": "Rua teste",
+        "number_street": "119",
+        "complement": "Teste N"
+    }
+
+    response = client.post("/user/create", data=json.dumps(data), headers=headers)
+    
+    for error in response.json:
+        assert response.json[error] == [f'{error} Não é um campo válido.']
+
+    assert response.status_code == 400
+
