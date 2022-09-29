@@ -13,7 +13,7 @@ def func_validate_description(description):
 class CreaterRoleSchema(Schema):
     description = fields.String(required=True, error_messages=handle_error_messages('description'))
     name = fields.String(required=True, error_messages=handle_error_messages('name'))
-    permission = fields.List(required=True, error_messages=handle_error_messages('name'))
+    permissions = fields.List(fields.Integer(), required=True, error_messages=handle_error_messages('permissions'))
 
     @validates('description')
     def validate_description(self, description):
@@ -23,10 +23,10 @@ class CreaterRoleSchema(Schema):
     def validate_name(self, name):
         func_validate_name(name)
 
-    @validates('permission')
-    def validate_permission(self, permission):
+    @validates('permissions')
+    def validate_permission(self, permissions):
         # Aqui é só para saber se o Length[Array] da Permission é maior que 0, caso sim, a controller faz a outra verificação se existe ou não
         # as permissões no banco de dados. 
-        if len(permission) <=0:
-            raise ValidationError(f'{permission} não pode ser menor ou igual a 0.')
+        if len(permissions) <=0:
+            raise ValidationError('O permissions não pode ser menor ou igual a 0.')
 

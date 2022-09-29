@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from src.app.models.user import User
 from src.app.models.user import User, user_share_schema, users_roles_share_schema
+from src.app.models.role import Role
 from src.app.utils import generate_jwt
 
 
@@ -84,3 +85,17 @@ def get_users_by_name(name, page=None):
 def get_all_users(page=None):
     users = users_roles_share_schema.dump(User.query.paginate(per_page=20, page=page).items)
     return users if users else None
+
+def create_role(description, name, permissions):
+    try:
+        Role.seed(
+            description=description,
+            name=name,
+            permissions=permissions
+        )
+    
+        return {"message": "Role criada com sucesso."}
+
+    except:
+        return {"error": "Erro na criação de Role. Role já existente."}
+
