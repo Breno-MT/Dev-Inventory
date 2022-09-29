@@ -11,12 +11,12 @@ def test_create_role_success(client, logged_in_as_root):
     data = {
         "description": "Criador de Conteúdo",
         "name": "YouTuber",
-        "permissions": [1, 2]
+        "permissions": [1, 2, 3, 4]
     }
 
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-    assert response.json["message"] == "Role criada com sucesso."
+
     assert response.status_code == 201
 
 
@@ -36,7 +36,7 @@ def test_create_role_permission_insufficient(client, logged_in_client):
 
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-    assert response.json["error"] == "Você não tem permissão."
+    assert response.json["error"] == "Você não tem permissão para essa funcionalidade"
     assert response.status_code == 403
 
 
@@ -78,7 +78,7 @@ def test_create_role_already_exists(client, logged_in_as_root):
     response = client.post("user/role", data=json.dumps(data), headers=headers)
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-    assert response.json["error"] == "Role já existente."
+    assert response.json["error"] == "Erro na criação de Role. Role já existente."
     assert response.status_code == 400
 
 
@@ -93,13 +93,13 @@ def test_create_role_with_non_existent_permission(client, logged_in_as_root):
     data = {
         "description": "Teste",
         "name": "Se funcionar, deu ruim demais",
-        "permissions": [1, 2]
+        "permissions": [5, 5]
     }
 
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-    assert response.json["error"] == "Permissões são inválidas."
-    assert response.status_code == 400
+    assert response.json["error"] == "Array de Permissões não existente."
+    assert response.status_code == 404
 
 
 def test_create_role_with_invalid_description_format(client, logged_in_as_root):
@@ -113,13 +113,15 @@ def test_create_role_with_invalid_description_format(client, logged_in_as_root):
     data = {
         "description": 1234,
         "name": "1234",
-        "permission": [1,2,3]
+        "permissions": [1,2,3]
     }
 
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-    assert response.json["error"] == "description deve ser apenas String."
-    assert response.status_code == 403
+    for error in response.json:
+        assert response.json[error] == [f'{error} Não é um campo válido.']
+
+    assert response.status_code == 400
 
 
 def teste_create_role_with_zero_permissions(client, logged_in_as_root):
@@ -133,13 +135,14 @@ def teste_create_role_with_zero_permissions(client, logged_in_as_root):
     data = {
         "description": "Melhor Teste já realizado",
         "name": "De fato é o melhor",
-        "permission": []
+        "permissions": []
     }
 
     response = client.post("user/role", data=json.dumps(data), headers=headers)
 
-
-    assert response.json["error"] == "permission não pode ser menor ou igual a 0."
-    assert response.status_code == 403
+    for error in response.json:
+        assert response.json[error] == [f'O {error} não pode ser menor ou igual a 0.']
+    
+    assert response.status_code == 400
 
 
