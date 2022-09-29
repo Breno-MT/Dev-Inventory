@@ -17,7 +17,7 @@ from src.app.models.city import City
 from src.app.models.gender import Gender
 from src.app.models.role import Role
 from src.app.utils.decorators import validate_body
-from src.app.schemas import user_schemas
+from src.app.schemas import user_schemas, roles_schema
 from src.app.services.user_services import get_users_by_name, get_all_users
 from src.app.services.queries_services import check_existence
 from src.app.utils import flow
@@ -114,6 +114,13 @@ def user_login(body):
         status=200,
         mimetype='application/json'
     )
+
+@user.route("/role", methods=["POST"])
+@requires_access_level(['READ', 'WRITE', 'UPDATE', 'DELETE'])
+@validate_body(roles_schema.CreaterRoleSchema())
+def user_create_role(body):
+    pass
+
 
 
 @user.route('/auth/google', methods = ["POST"])
