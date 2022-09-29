@@ -11,7 +11,7 @@ role_permissions = db.Table('role_permissions',
 class Role(db.Model):
     __tablename__ = "roles"
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
-    description = db.Column(db.String(200), nullable = False)
+    description = db.Column(db.String(200), nullable = False, unique=True)
     name = db.Column(db.String(84), nullable = False)
     permissions = db.relationship('Permission', secondary=role_permissions, backref='roles')
 
