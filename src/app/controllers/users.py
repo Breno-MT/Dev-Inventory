@@ -126,6 +126,9 @@ def user_create_role(body):
     if permissions_query == []:
         return jsonify({"error": "Array de Permissões não existente."}), 404
 
+    if len(permissions_query) < len(body["permissions"]):
+        return jsonify({"error": "Array de Permissões não existente."}), 404
+
     response = create_role(
         description=body['description'],
         name=body['name'],
