@@ -319,19 +319,19 @@ Caso não tenha feita a instalação clique no link abaixo para realizar o mesmo
 [Instalação e configuração da aplicação](#como-executar)
 
 - Antes de tudo, ative a sua virtualenv do poetry com o seguinte comando:
-- Windows
+- Windows (Git Bash)
 ```
 Na raíz do projeto digite no terminal: source .venv/Scripts/activate
+```
+- Windows Terminal
+```
+Na raíz do projeto digite no terminal: .venv/Scripts/activate
 ```
 - Linux
 ```
 Na raíz do projeto digite no terminal: source .venv/bin/activate
 ```
 - Depois de ativar a virtualenv siga os passos abaixo!
-- Instalar o pytest utilizando o poetry (Caso esteja utilizando outra venv de sua preferência, entre no site do pytest: https://docs.pytest.org/en/7.1.x/getting-started.html#install-pytest para mais informações.)
-```
-poetry add --dev pytest pytest-flask
-```
 - Para executar os testes da aplicação digite no terminal:
 ```
 pytest tests/ -v -W ignore::DeprecationWarning
@@ -341,7 +341,7 @@ pytest tests/ -v -W ignore::DeprecationWarning
 ```
 pytest tests/users -v -W ignore::DeprecationWarning
 ```
-- Pronto, realizado o teste da aplicação levando em conta Testes Unitários e TDD !
+- Pronto, realizado o teste da aplicação levando em conta Testes Unitários!
 ```
 Para mais informações de Testes Unitários (Unit Tests): https://pt.wikipedia.org/wiki/Teste_de_unidade
 Para mais informações de TDD (Test-Driven Development): https://pt.wikipedia.org/wiki/Test-driven_development
