@@ -86,6 +86,11 @@ def get_inventories():
 def get_inventory_by_id(id):   
     try:
         inventory_by_id = get_inventories_by_id(id)
+
+        if inventory_by_id['user_id'] == None:
+            inventory_by_id['user_id'] = "Na empresa"
+            return jsonify(inventory_by_id), 200
+
         return jsonify(inventory_by_id), 200
 
     except:
