@@ -341,7 +341,7 @@ pytest tests/ -v -W ignore::DeprecationWarning
 ```
 pytest tests/users -v -W ignore::DeprecationWarning
 ```
-- Pronto, realizado o teste da aplicação levando em consta Testes Unitários e TDD !
+- Pronto, realizado o teste da aplicação levando em conta Testes Unitários e TDD !
 ```
 Para mais informações de Testes Unitários (Unit Tests): https://pt.wikipedia.org/wiki/Teste_de_unidade
 Para mais informações de TDD (Test-Driven Development): https://pt.wikipedia.org/wiki/Test-driven_development
