@@ -327,8 +327,8 @@ Na raíz do projeto digite no terminal: source .venv/Scripts/activate
 ```
 Na raíz do projeto digite no terminal: source .venv/bin/activate
 ```
-- Depois de ativar a virtualenv digite siga os passos abaixo!
-- Instalar o pytest utilizando o poetry (Caso esteja utilizando outra venv de sua preferência, entre no site do pytest: https://docs.pytest.org/en/7.1.x/getting-started.html#install-pytest)
+- Depois de ativar a virtualenv siga os passos abaixo!
+- Instalar o pytest utilizando o poetry (Caso esteja utilizando outra venv de sua preferência, entre no site do pytest: https://docs.pytest.org/en/7.1.x/getting-started.html#install-pytest para mais informações.)
 ```
 poetry add --dev pytest pytest-flask
 ```
