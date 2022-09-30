@@ -294,7 +294,7 @@ name: string (Query param não obrigatório)
 
 ### Regras ENDPOINT 12
 - O usuário deve estar logado e possuir autorização READ para este endpoint de inventário. Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
-- Caso passado um valor que não exista, irá retorna um 404 informando que o id não existe.
+- Caso passado um valor que não exista, irá retorna um Status de Erro 404 (NOT FOUND) informando que o id não existe.
 - Retorna o produto em si especificamente, retornando um Status de Sucesso 200 (OK).
 ```js
 {
