@@ -180,3 +180,27 @@ def test_update_user_patch_wrong_fields(client, logged_in_as_root):
         assert response.json[error] == [f'Unknown field.']
 
     assert response.status_code == 400
+
+def test_update_user_patch_same_email(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f"Bearer {logged_in_as_root}"
+    }
+
+    user_id = 12
+
+    data = {
+        "email": "luislopes@gmail.com",
+        "name": "TESTE",
+        "password": "123TEstando!!"
+    }
+
+    response = client.patch(f"user/{user_id}", data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == 'Email já existe.'
+    
+    assert response.status_code == 409
+
