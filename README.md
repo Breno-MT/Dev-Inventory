@@ -283,7 +283,7 @@ name: string (Query param não obrigatório)
 - Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
 - Retorna Status de Erro 400 (BAD REQUEST) se o cargo que está sendo criado já existe, informando que o cargo já existe.
 - Retorna Status de 403 (Forbidden) caso não tenha as permissões.
-- Retorna a mensagem informando que o cargo foi criado com Status de Sucesso 201 (OK).
+- Retorna a mensagem informando que o cargo foi criado com Status de Sucesso 201 (Created).
 ```js
 {
   description (string - obrigatório),
