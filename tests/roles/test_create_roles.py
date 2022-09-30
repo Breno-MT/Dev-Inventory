@@ -101,6 +101,25 @@ def test_create_role_with_non_existent_permission(client, logged_in_as_root):
     assert response.json["error"] == "Array de Permissões não existente."
     assert response.status_code == 404
 
+def test_create_role_with_non_existent_and_existent_permissions(client, logged_in_as_root):
+    mimetype = 'application/json'
+    headers = {
+        'Content-Type': mimetype,
+        'Accept': mimetype,
+        'Authorization': f'Bearer {logged_in_as_root}'
+    }
+
+    data = {
+        "description": "Teste",
+        "name": "Se funcionar, deu ruim demais",
+        "permissions": [1, 5, 6, 2, 10, 12, 3]
+    }
+
+    response = client.post("user/role", data=json.dumps(data), headers=headers)
+
+    assert response.json["error"] == 'Array de Permissões não existente.'
+    assert response.status_code == 404
+
 
 def test_create_role_with_invalid_description_format(client, logged_in_as_root):
     mimetype = "application/json"
