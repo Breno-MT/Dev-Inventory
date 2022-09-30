@@ -14,6 +14,7 @@
 - [Funcionalidades](#funcionalidades)
 - [Como executar](#como-executar)
 - [Endpoints](#endpoints)
+- [Testes Da Aplicação](#testes-da-aplicação)
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Agradecimentos](#agradecimentos)
 - [Desenvolvedores](#desenvolvedores)
@@ -128,7 +129,8 @@ poetry run flask populate_db
 8. `[PATCH] /user/<int:inventory> (inventory)` - [Regras endpoint 8](#regras-endpoint-8)
 9. `[GET] /inventory?<int:id> ou <string:name> (inventories)` - [Regras endpoint 9](#regras-endpoint-9)
 10. `[GET] /inventory/results (inventories)` - [Regras endpoint 10](#regras-endpoint-10)
-
+11. `[POST] /user/role (users)` - [Regras endpoint 11](#regras-endpoint-11)
+12. `[GET] /inventory/id:<int:id> (inventory)` - [Regras endpoint 12](#regras-endpoint-12)
 ### Regras ENDPOINT 1:
 
 - o body da requisição deve conter obrigatoriamente as chaves email e password;
@@ -275,6 +277,75 @@ name: string (Query param não obrigatório)
 - Retorna o total da soma de todos os valores dos itens.
 - Retorna quantos itens estão emprestados para usuários.
 - Retorna as estatísticas, além do Status 200 (OK).
+
+### Regras ENDPOINT 11
+- O usuário deve estar logado e possuir autorização (READ, WRITE, UPDATE e DELETE) para este endpoint de inventário. 
+- Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
+- Retorna Status de Erro 400 (BAD REQUEST) se o cargo que está sendo criado já existe, informando que o cargo já existe.
+- Retorna Status de 403 (Forbidden) caso não tenha as permissões.
+- Retorna a mensagem informando que o cargo foi criado com Status de Sucesso 201 (OK).
+```js
+{
+  description (string - obrigatório),
+  name (string - obrigatório),
+  permissions (array de ids exemplo: [1,2,3,4] - obrigatório)
+}
+```
+
+### Regras ENDPOINT 12
+- O usuário deve estar logado e possuir autorização READ para este endpoint de inventário. Caso não possua, irá retornar o Status de Erro 403 (Forbidden).
+- Caso passado um valor que não exista, irá retorna um 404 informando que o id não existe.
+- Retorna o produto em si especificamente, retornando um Status de Sucesso 200 (OK).
+```js
+{
+  id (integer - obrigatório)
+}
+```
+
+### Testes da Aplicação
+
+#### Como executar
+
+- Primeiramente você precisará ter instalado em sua máquina: **Python 3.10**, **Poetry**, **Postgresql** e uma plataforma de sua preferência: pgAdmin, DBeaver ou outro.
+<p align="justify">
+  Para instalação utilizar:
+</p>
+
+```
+Obs: Não se esqueça de ter seguido toda a etapa de instalação e os seus passos até a utilização da Aplicação, volte aqui somente de depois ter feito o mesmo!!!
+Estarei levando em conta que esteja tudo certo com a aplicação em si!
+Caso não tenha feita a instalação clique no link abaixo para realizar o mesmo.
+```
+[Instalação e configuração da aplicação](#como-executar)
+
+- Antes de tudo, ative a sua virtualenv do poetry com o seguinte comando:
+- Windows
+```
+Na raíz do projeto digite no terminal: source .venv/Scripts/activate
+```
+- Linux
+```
+Na raíz do projeto digite no terminal: source .venv/bin/activate
+```
+- Depois de ativar a virtualenv digite siga os passos abaixo!
+- Instalar o pytest utilizando o poetry (Caso esteja utilizando outra venv de sua preferência, entre no site do pytest: https://docs.pytest.org/en/7.1.x/getting-started.html#install-pytest)
+```
+poetry add --dev pytest pytest-flask
+```
+- Para executar os testes da aplicação digite no terminal:
+```
+pytest tests/ -v -W ignore::DeprecationWarning
+```
+- Obs: tests/ é um parametro que passamos para indicar que a pasta tests/ irá executar os testes dentro da mesma! 
+- Caso queira testar, por exemplo, somente o users, adicione da seguinte forma:
+```
+pytest tests/users -v -W ignore::DeprecationWarning
+```
+- Pronto, realizado o teste da aplicação levando em consta Testes Unitários e TDD !
+```
+Para mais informações de Testes Unitários (Unit Tests): https://pt.wikipedia.org/wiki/Teste_de_unidade
+Para mais informações de TDD (Test-Driven Development): https://pt.wikipedia.org/wiki/Test-driven_development
+```
 
 ## Tecnologias utilizadas
 
