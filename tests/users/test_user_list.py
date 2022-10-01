@@ -85,4 +85,19 @@ def test_list_user_no_content(client, logged_in_client):
     assert response.status_code == 204
 
 
+def test_list_user_by_numeric_param(client, logged_in_client):
+    mimetype = 'application/json'
+    headers = {
+        "Content-Type": mimetype,
+        "Accept": mimetype,
+        "Authorization": f"Bearer {logged_in_client}"
+    }
+
+    name = 1234
+
+    response = client.get(f"user/?name={name}", headers=headers)
+
+    # Neste caso, não tem o que encontrar logo retorna um 204.
+    assert response.status_code == 204
+
 
