@@ -245,3 +245,48 @@ def test_create_role_invalid_permission_format(client, logged_in_as_root):
     
     assert response.status_code == 400
 
+
+def test_create_role_name_length_equals_to_5(client, logged_in_as_root):
+    mimetype = "application/json"
+    headers = {
+        "Content-Type": mimetype,
+        "Accept": mimetype,
+        "Authorization": f"Bearer {logged_in_as_root}"
+    }
+
+    data = {
+        "description": "Testeee",
+        "name": "teste",
+        "permissions": [1,2,3,4]
+    }
+
+    response = client.post("user/role", data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == [f'{error} deve ser apenas String e acima de 5 caracteres.']
+    
+    assert response.status_code == 400
+
+
+def test_create_role_description_length_equals_to_5(client, logged_in_as_root):
+    mimetype = "application/json"
+    headers = {
+        "Content-Type": mimetype,
+        "Accept": mimetype,
+        "Authorization": f"Bearer {logged_in_as_root}"
+    }
+
+    data = {
+        "description": "Teste",
+        "name": "testee",
+        "permissions": [1,2,3,4]
+    }
+
+    response = client.post("user/role", data=json.dumps(data), headers=headers)
+
+    for error in response.json:
+        assert response.json[error] == [f'{error} deve ser apenas String e acima de 5 caracteres.']
+    
+    assert response.status_code == 400
+
+
