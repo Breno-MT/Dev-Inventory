@@ -2,12 +2,19 @@ from marshmallow import Schema, fields, ValidationError, validates
 from src.app.utils.error_messages import handle_error_messages
 
 def func_validate_name(name):
-    if len(name) <= 0 and len(name) <= 5 and not isinstance(name, str):
-        raise ValidationError(f"{name} deve ser apenas String e acima de 5 caracteres.")
+    if len(name) <= 5 and not isinstance(name, str):
+        raise ValidationError("name deve ser apenas String e acima de 5 caracteres.")
+    
+    if len(name) <= 5 and isinstance(name, str):
+        raise ValidationError("name deve ser apenas String e acima de 5 caracteres.")
+
 
 def func_validate_description(description):
-    if len(description) <= 0 and len(description) <= 5 and not isinstance(description, str):
-        raise ValidationError(f'{description} deve ser apenas String e acima de 5 caracteres.')
+    if len(description) <= 5 and not isinstance(description, str):
+        raise ValidationError('description deve ser apenas String e acima de 5 caracteres.')
+    
+    if len(description) <= 5 and isinstance(description, str):
+        raise ValidationError('description deve ser apenas String e acima de 5 caracteres.')
 
 
 class CreaterRoleSchema(Schema):
