@@ -101,6 +101,25 @@ poetry install
  A seguir você precisará criar um arquivo de variáveis de ambiente chamado *.env*. Para isso você utilizará como exemplo o arquivo *.env_example*, apenas trocando os dados de exemplo para os dados que você irá utilizar em sua máquina para testes.
 </p>
 
+```
+Lembre, crie o nome de seu banco de dados da seguinte maneira:
+NOME_DATABASE-development
+NOME_DATABASE-testing
+NOME_DATABASE-homologation
+NOME_DATABASE-production
+---
+
+Ao invés de ser NOME_DATABASE, utilize um nome que você ache interessante.
+E no arquivo .env, aonde tem:
+  NAME_DB=project
+Substitue project por NOME_DATABASE que você escolheu lá no seu PostGreSQL por exemplo.
+
+---
+
+Pois assim, você só muda no FLASK_ENV=environment
+Aonde environment pode ser testing, development, homologation ou production.
+```
+
 Feito isso, você irá utilizar os comandos a seguir para criar suas tabelas:
 
 ```
