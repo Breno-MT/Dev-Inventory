@@ -113,6 +113,7 @@ Ao invés de ser NOME_DATABASE, utilize um nome que você ache interessante.
 E no arquivo .env, aonde tem:
   NAME_DB=project
 Substitue project por NOME_DATABASE que você escolheu lá no seu PostGreSQL por exemplo.
+Não é para se utilizar -testing ou qualquer outro no NAME_DB, somente o NOME_DATABASE
 
 ---
 
